@@ -278,6 +278,7 @@ type SCL2PProtocol uint8
 
 const (
 	SCL2PProtocolCHAP SCL2PProtocol = 1
+	SCL2PProtocolIPCP SCL2PProtocol = 2
 )
 
 // Decode a raw v4 or v6 IP packet.
@@ -450,4 +451,5 @@ func initActualTypeData() {
 	USBTransportTypeMetadata[USBTransportTypeBulk] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeUSBBulk), Name: "Bulk", LayerType: LayerTypeUSBBulk}
 
 	SCL2PProtocolMetadata[SCL2PProtocolCHAP] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeCHAP), Name: "CHAP", LayerType: LayerTypeCHAP}
+	SCL2PProtocolMetadata[SCL2PProtocolIPCP] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeIPCP), Name: "IPCP", LayerType: LayerTypeIPCP}
 }

@@ -150,6 +150,7 @@ var (
 	LayerTypeRADIUS                       = gopacket.RegisterLayerType(146, gopacket.LayerTypeMetadata{Name: "RADIUS", Decoder: gopacket.DecodeFunc(decodeRADIUS)})
 	LayerTypeSCL2P                        = gopacket.RegisterLayerType(147, gopacket.LayerTypeMetadata{Name: "SCL2P", Decoder: gopacket.DecodeFunc(decodeSCL2P)})
 	LayerTypeCHAP                         = gopacket.RegisterLayerType(148, gopacket.LayerTypeMetadata{Name: "CHAP", Decoder: gopacket.DecodeFunc(decodeCHAP)})
+	LayerTypeIPCP                         = gopacket.RegisterLayerType(149, gopacket.LayerTypeMetadata{Name: "IPCP", Decoder: gopacket.DecodeFunc(decodeIPCP)})
 )
 
 var (
