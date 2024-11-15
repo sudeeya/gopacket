@@ -3,7 +3,7 @@
 package layers
 
 // Created by gen2.go, don't edit manually
-// Generated at 2017-10-23 10:20:24.458771856 -0600 MDT m=+0.001159033
+// Generated at 2024-11-15 17:02:58.811520761 +0300 MSK m=+0.000098139
 
 import (
 	"fmt"
@@ -23,6 +23,7 @@ func init() {
 	initUnknownTypesForProtocolFamily()
 	initUnknownTypesForDot11Type()
 	initUnknownTypesForUSBTransportType()
+	initUnknownTypesForSCL2PProtocol()
 	initActualTypeData()
 }
 
@@ -429,6 +430,43 @@ func initUnknownTypesForUSBTransportType() {
 		USBTransportTypeMetadata[i] = EnumMetadata{
 			DecodeWith: &errorDecodersForUSBTransportType[i],
 			Name:       "UnknownUSBTransportType",
+		}
+	}
+}
+
+// Decoder calls SCL2PProtocolMetadata.DecodeWith's decoder.
+func (a SCL2PProtocol) Decode(data []byte, p gopacket.PacketBuilder) error {
+	return SCL2PProtocolMetadata[a].DecodeWith.Decode(data, p)
+}
+
+// String returns SCL2PProtocolMetadata.Name.
+func (a SCL2PProtocol) String() string {
+	return SCL2PProtocolMetadata[a].Name
+}
+
+// LayerType returns SCL2PProtocolMetadata.LayerType.
+func (a SCL2PProtocol) LayerType() gopacket.LayerType {
+	return SCL2PProtocolMetadata[a].LayerType
+}
+
+type errorDecoderForSCL2PProtocol int
+
+func (a *errorDecoderForSCL2PProtocol) Decode(data []byte, p gopacket.PacketBuilder) error {
+	return a
+}
+func (a *errorDecoderForSCL2PProtocol) Error() string {
+	return fmt.Sprintf("Unable to decode SCL2PProtocol %d", int(*a))
+}
+
+var errorDecodersForSCL2PProtocol [256]errorDecoderForSCL2PProtocol
+var SCL2PProtocolMetadata [256]EnumMetadata
+
+func initUnknownTypesForSCL2PProtocol() {
+	for i := 0; i < 256; i++ {
+		errorDecodersForSCL2PProtocol[i] = errorDecoderForSCL2PProtocol(i)
+		SCL2PProtocolMetadata[i] = EnumMetadata{
+			DecodeWith: &errorDecodersForSCL2PProtocol[i],
+			Name:       "UnknownSCL2PProtocol",
 		}
 	}
 }

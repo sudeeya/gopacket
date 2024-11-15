@@ -51,6 +51,7 @@ const (
 	EthernetTypeQinQ                        EthernetType = 0x88a8
 	EthernetTypeLinkLayerDiscovery          EthernetType = 0x88cc
 	EthernetTypeEthernetCTP                 EthernetType = 0x9000
+	EthernetTypeLocalExperimental           EthernetType = 0x88b5
 )
 
 // IPProtocol is an enumeration of IP protocol values, and acts as a decoder
@@ -273,6 +274,12 @@ const (
 	Dot11TypeDataQOSCFAckPollNoData Dot11Type = 0x3e
 )
 
+type SCL2PProtocol uint8
+
+const (
+	SCL2PProtocolCHAP SCL2PProtocol = 1
+)
+
 // Decode a raw v4 or v6 IP packet.
 func decodeIPv4or6(data []byte, p gopacket.PacketBuilder) error {
 	version := data[0] >> 4
@@ -319,6 +326,7 @@ func initActualTypeData() {
 	EthernetTypeMetadata[EthernetTypeQinQ] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeDot1Q), Name: "Dot1Q", LayerType: LayerTypeDot1Q}
 	EthernetTypeMetadata[EthernetTypeTransparentEthernetBridging] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeEthernet), Name: "TransparentEthernetBridging", LayerType: LayerTypeEthernet}
 	EthernetTypeMetadata[EthernetTypeERSPAN] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeERSPANII), Name: "ERSPAN Type II", LayerType: LayerTypeERSPANII}
+	EthernetTypeMetadata[EthernetTypeLocalExperimental] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeSCL2P), Name: "SCL2P", LayerType: LayerTypeSCL2P}
 
 	IPProtocolMetadata[IPProtocolIPv4] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeIPv4), Name: "IPv4", LayerType: LayerTypeIPv4}
 	IPProtocolMetadata[IPProtocolTCP] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeTCP), Name: "TCP", LayerType: LayerTypeTCP}
@@ -440,4 +448,6 @@ func initActualTypeData() {
 	USBTransportTypeMetadata[USBTransportTypeInterrupt] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeUSBInterrupt), Name: "Interrupt", LayerType: LayerTypeUSBInterrupt}
 	USBTransportTypeMetadata[USBTransportTypeControl] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeUSBControl), Name: "Control", LayerType: LayerTypeUSBControl}
 	USBTransportTypeMetadata[USBTransportTypeBulk] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeUSBBulk), Name: "Bulk", LayerType: LayerTypeUSBBulk}
+
+	SCL2PProtocolMetadata[SCL2PProtocolCHAP] = EnumMetadata{DecodeWith: gopacket.DecodeFunc(decodeCHAP), Name: "CHAP", LayerType: LayerTypeCHAP}
 }
