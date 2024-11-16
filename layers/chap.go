@@ -13,9 +13,10 @@ const (
 	CHAPResponse  = 2
 	CHAPSuccess   = 3
 	CHAPFailure   = 4
+	CHAPDiscover  = 5
 )
 
-// CHAP is the layer for Challenge Handshake Authentication Protocol.
+// CHAP is the layer for modified Challenge Handshake Authentication Protocol.
 type CHAP struct {
 	BaseLayer
 	Code       uint8
@@ -47,6 +48,11 @@ func (chap *CHAP) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error
 		return fmt.Errorf("CHAP length %d too short, %d expected", len(data), chap.Length)
 	}
 	switch chap.Code {
+	case CHAPDiscover:
+		chap.ValueSize = 0
+		chap.Value = nil
+		chap.Name = nil
+		chap.Message = nil
 	case CHAPChallenge, CHAPResponse:
 		chap.ValueSize = data[4]
 		if len(data)-5 < int(chap.ValueSize) {
@@ -76,6 +82,10 @@ func (chap *CHAP) DecodeFromBytes(data []byte, df gopacket.DecodeFeedback) error
 func (chap *CHAP) SerializeTo(b gopacket.SerializeBuffer, opts gopacket.SerializeOptions) error {
 	size := 4
 	switch chap.Code {
+	case CHAPDiscover:
+		if chap.Value != nil || chap.Name != nil || chap.Message != nil {
+			return fmt.Errorf("packet with CHAP code %d cannot contain Value, Name and Message fields", chap.Code)
+		}
 	case CHAPChallenge, CHAPResponse:
 		if chap.Message != nil {
 			return fmt.Errorf("packet with CHAP code %d cannot contain Message field", chap.Code)
